@@ -62,6 +62,8 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         updatedCart.push(newProduct);
       }
 
+
+
       setCart(updatedCart);
       localStorage.setItem("@RocketShoes:cart", JSON.stringify(updatedCart));
     } catch {
@@ -73,6 +75,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   useEffect(() => {
     prevCartRef.current = cart;
+
   });
 
   const cartPreviousValue = prevCartRef.current ?? cart;

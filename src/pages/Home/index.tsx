@@ -9,6 +9,7 @@ import Carousel from "../../components/Carousel";
 import SlideOne from "../../components/SlideOne";
 import Slide2 from "../../components/SlideOne/Slide2";
 import Slide3 from "../../components/SlideOne/Slide3";
+import CheapestProduct from "../../components/CheapestProduct";
 
 interface Product {
   id: number;
@@ -17,16 +18,13 @@ interface Product {
   image: string;
 }
 
-interface ProductFormatted extends Product {
-  priceFormatted: string;
-}
-
 interface CartItemsAmount {
   [key: number]: number;
 }
 
 const Home = (): JSX.Element => {
-  const [products, setProducts] = useState<ProductFormatted[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [chepPromo, setChepPromo] = useState<Product>();
   const { addProduct, cart } = useCart();
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
     const newSumAmount = { ...sumAmount };
@@ -38,12 +36,12 @@ const Home = (): JSX.Element => {
     async function loadProducts() {
       const response = await api.get<Product[]>("products");
 
-      const data = response.data.map((product) => ({
-        ...product,
-        priceFormatted: formatPrice(product.price),
-      }));
 
-      setProducts(data);
+      response.data.sort((a: Product, b: Product) => { return a.price - b.price; })
+      const cheapestProduct = response.data[0]
+
+      setProducts(response.data);
+      setChepPromo(cheapestProduct as Product);
     }
 
     loadProducts();
@@ -61,12 +59,13 @@ const Home = (): JSX.Element => {
         <Slide3 />
 
       </Carousel>
+      <CheapestProduct product={chepPromo} />
       <ProductList>
         {products.map((product) => (
           <li key={product.id}>
             <img src={product.image} alt="Tênis de Caminhada Leve Confortável" />
             <strong>{product.title}</strong>
-            <span>{product.priceFormatted}</span>
+            <span>{formatPrice(product.price)}</span>
             <button
               type="button"
               data-testid="add-product-button"
