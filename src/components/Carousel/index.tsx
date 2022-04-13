@@ -1,5 +1,5 @@
-
-import * as React from "react";
+import React from "react";
+import { useEffect } from "react";
 import styled, { css } from "styled-components";
 
 const SCarouselWrapper = styled.div`
@@ -51,6 +51,14 @@ const Carousel = ({ children }: IProps) => {
       {slide}
     </SCarouselSlide>
   ));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((currentSlide + 1) % activeSlide.length);
+    }, 1000 * 3); // 3 Seconds
+
+    return () => clearInterval(interval);
+  }, [currentSlide]);
 
   return (
     <div>
