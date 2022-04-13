@@ -7,4 +7,5 @@ via terminal dentro do diretorio do projeto
 Tenha o Yarn instalado e comandos: 
 
 yarn install 
+yarn server
 yarn start
