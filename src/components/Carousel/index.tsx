@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, } from "react";
 import styled, { css } from "styled-components";
 
 const SCarouselWrapper = styled.div`
@@ -56,7 +56,8 @@ const Carousel = ({ children }: IProps) => {
     }, 1000 * 3); // 3 Seconds
 
     return () => clearInterval(interval);
-  }, [currentSlide]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlide])
 
   return (
     <div>
